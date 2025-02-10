@@ -1,1 +1,2 @@
-# Automatic-birthday-greetings-for-VKontakte-friends
+# Automatic birthday greetings for VKontakte friends / Автоматическое поздравление с днём рождения друзей ВКонтакте / Автопоздравление
+Каждый день у кого-то в ВК день рождения. Этот простенький скрипт поздравит всех твоих друзей с днём рождения.
