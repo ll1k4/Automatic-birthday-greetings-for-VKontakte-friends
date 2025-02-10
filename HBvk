@@ -1,0 +1,46 @@
+import vk_api
+import datetime
+
+# Получите токен доступа
+TOKEN = 'Ваш_токен_доступа'
+
+def get_birthdays(vk):
+    # Получаем список друзей
+    friends = vk.friends.get(fields='bdate')['items']
+    today = datetime.datetime.now().date()
+
+    birthdays_today = []
+    
+    for friend in friends:
+        if 'bdate' in friend:
+            bdate = friend['bdate']
+            # Проверяем, что дата содержит день и месяц
+            if len(bdate.split('.')) >= 3:  # Если есть год
+                day, month, year = map(int, bdate.split('.'))
+            else:
+                day, month = map(int, bdate.split('.'))
+                year = None            
+            if (today.day == day) and (today.month == month):
+                birthdays_today.append(friend['id'])
+
+    return birthdays_today
+
+def send_congratulations(vk, friend_ids):
+    for friend_id in friend_ids:
+        message = "С днём рождения! 🎉 Пусть каждый день будет полон радости и успехов!"
+        vk.messages.send(user_id=friend_id, message=message, random_id=0)
+
+def main():
+    vk_session = vk_api.VkApi(token=TOKEN)
+    vk = vk_session.get_api()
+
+    birthdays_today = get_birthdays(vk)
+    
+    if birthdays_today:
+        send_congratulations(vk, birthdays_today)
+        print(f"Поздравления отправлены {len(birthdays_today)} друзьям с днём рождения!")
+    else:
+        print("Сегодня нет дней рождения у друзей.")
+
+if __name__ == '__main__':
+    main()
